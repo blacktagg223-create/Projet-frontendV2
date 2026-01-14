@@ -35,9 +35,9 @@ export const useApiData = () => {
       const [agentsResponse, forecastResponse, beliefsResponse] = await Promise.all([
         api.get('/agents/status').catch(() => null),
         api.get('/forecast/latest').catch(() => null),
-        api.get('/beliefs', { category: 'sensor', limit: 20 }).catch(() => null)
+        api.get('/beliefs').catch(() => null)
       ]);
-
+      console.log(beliefsResponse)
       // If all requests fail, switch to mock data
       if (!agentsResponse && !forecastResponse && !beliefsResponse) {
         setUseMockData(true);
@@ -51,9 +51,9 @@ export const useApiData = () => {
 
       setData(prev => ({
         ...prev,
-        agents: agentsResponse?.agents || prev.agents,
+        agents: Object.values(agentsResponse.agents) || prev.agents,
         forecast: forecastResponse || prev.forecast,
-        beliefs: beliefsResponse?.beliefs || prev.beliefs,
+        beliefs: Object.values(beliefsResponse?.beliefs) || prev.beliefs,
         loading: false,
         error: null,
         lastUpdated: new Date()

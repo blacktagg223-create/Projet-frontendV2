@@ -21,9 +21,11 @@ function App() {
   } = useApiData();
 
   // Check if all agents are healthy
-  const agentsHealthy = agents.every(agent => 
-    agent.state !== 'EMERGENCY' && agent.state !== 'DEGRADED'
-  );
+  const agentsHealthy = Array.isArray(agents)
+  ? agents.every(agent =>
+      agent.state !== 'EMERGENCY' && agent.state !== 'DEGRADED'
+    )
+  : false;
 
   if (loading && agents.length === 0) {
     return (
@@ -35,7 +37,7 @@ function App() {
       </div>
     );
   }
-
+  console.log(agents)
   return (
     <div className="min-h-screen bg-gray-950">
       <Header 
@@ -61,7 +63,7 @@ function App() {
           
           {/* Forecast Chart - takes 3 columns */}
           <div className="lg:col-span-3">
-            <ForecastChart forecast={forecast} />
+            <ForecastChart forecast={forecast.forecast} />
           </div>
         </div>
         
