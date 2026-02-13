@@ -48,9 +48,9 @@ const BatteryStatus = ({ beliefs }) => {
     return belief ? belief.value : defaultValue;
   };
 
-  const soc = getMetricValue('battery.soc', 75);
-  const temperature = getMetricValue('battery.temperature', 32.1);
-  const current = getMetricValue('battery.current', 25.3);
+  const soc = getMetricValue('sensor.battery_soc.battery_soc', 75);
+  const temperature = getMetricValue('sensor.battery_temp.battery_temp', 32.1);
+  const current = getMetricValue('sensor.battery_current.battery_current', 25.3);
   const voltage = getMetricValue('battery.voltage', 485.2);
 
   const batteryStatusColor = getBatteryStatusColor(soc, temperature);
