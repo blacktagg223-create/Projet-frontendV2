@@ -1,6 +1,7 @@
 import { useApiData } from './hooks/useApiData';
 import Header from './components/Header';
 import AgentStatus from './components/AgentStatus';
+import AgentDecisions from './components/AgentDecisions';
 import ForecastChart from './components/ForecastChart';
 import ProductionMetrics from './components/ProductionMetrics';
 import BatteryStatus from './components/BatteryStatus';
@@ -71,6 +72,11 @@ function App() {
           
           {/* Battery Status */}
           <BatteryStatus beliefs={beliefs} />
+        </div>
+        
+        {/* Agent Decisions */}
+        <div className="mb-6">
+          <AgentDecisions />
         </div>
         
         {/* Manual Control Panel - only show when in manual mode */}
