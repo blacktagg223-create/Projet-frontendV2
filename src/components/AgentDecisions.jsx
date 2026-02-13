@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { Brain, Clock, Target, CheckCircle, XCircle, AlertCircle } from 'lucide-react';
+import { Brain, Clock, Target, CircleCheck as CheckCircle, Circle as XCircle, CircleAlert as AlertCircle } from 'lucide-react';
 import { formatTimestamp } from '../utils/helpers';
 
 const DecisionCard = ({ decision }) => {
