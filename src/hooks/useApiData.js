@@ -37,7 +37,6 @@ export const useApiData = () => {
         api.get('/forecast/latest').catch(() => null),
         api.get('/beliefs').catch(() => null)
       ]);
-      console.log(beliefsResponse)
       // If all requests fail, switch to mock data
       if (!agentsResponse && !forecastResponse && !beliefsResponse) {
         setUseMockData(true);

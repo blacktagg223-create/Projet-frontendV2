@@ -28,7 +28,6 @@ const MetricCard = ({ icon: Icon, label, value, unit, trend, color = "text-blue-
 };
 
 const ProductionMetrics = ({ beliefs }) => {
-    console.log(beliefs);
   // Extract metrics from beliefs data
   const getMetricValue = (key, defaultValue = 0) => {
     const belief = beliefs.find(b => b.key === key);

@@ -2,6 +2,8 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { TrendingUp } from 'lucide-react';
 
 const ForecastChart = ({ forecast }) => {
+    console.log(forecast.forecast.predictions);
+    forecast = forecast.forecast;
   if (!forecast || !forecast.predictions || forecast.predictions.length === 0) {
     return (
       <div className="bg-gray-900 rounded-lg p-6">
@@ -15,7 +17,6 @@ const ForecastChart = ({ forecast }) => {
       </div>
     );
   }
-
   // ✅ Adapter les données du backend au format attendu
   const chartData = forecast?.predictions?.map((pred, index) => ({
     horizon: pred.horizon || `T+${index + 1}h`,
