@@ -182,7 +182,7 @@ const AgentDecisions = ({ decisions = [] }) => {
   });
 
   // Sort by timestamp (newest first)
-  const sortedDecisions = filteredDecisions.sort((a, b) =>
+  const sortedDecisions = filteredDecisions.sort((a, b) => 
     new Date(b.timestamp) - new Date(a.timestamp)
   );
 
@@ -193,7 +193,7 @@ const AgentDecisions = ({ decisions = [] }) => {
           <Brain className="w-5 h-5 text-purple-500" />
           <h2 className="text-lg font-semibold text-white">Agent Decisions</h2>
         </div>
-
+        
         <div className="flex items-center gap-3">
           <select
             value={selectedAgent}
@@ -207,7 +207,7 @@ const AgentDecisions = ({ decisions = [] }) => {
               </option>
             ))}
           </select>
-
+          
           <select
             value={filter}
             onChange={(e) => setFilter(e.target.value)}

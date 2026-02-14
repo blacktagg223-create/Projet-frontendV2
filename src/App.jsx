@@ -79,6 +79,11 @@ function App() {
           <AgentDecisions />
         </div>
         
+        {/* Agent Decisions */}
+        <div className="mb-6">
+          <AgentDecisions />
+        </div>
+        
         {/* Manual Control Panel - only show when in manual mode */}
         <ManualControlPanel 
           onSendIntention={sendIntention}
