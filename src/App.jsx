@@ -22,7 +22,7 @@ function App() {
   } = useApiData();
 
   // Check if all agents are healthy
-  const agentsHealthy = agents.every(agent => 
+  const agentsHealthy = agents.every(agent =>
     agent.state !== 'EMERGENCY' && agent.state !== 'DEGRADED'
   );
 
@@ -39,13 +39,13 @@ function App() {
 
   return (
     <div className="min-h-screen bg-gray-950">
-      <Header 
+      <Header
         systemMode={systemMode}
         onModeChange={setSystemMode}
         agentsHealthy={agentsHealthy}
         lastUpdated={lastUpdated}
       />
-      
+
       <main className="p-6">
         {error && (
           <div className="bg-red-900 border border-red-700 text-red-100 px-4 py-3 rounded-lg mb-6">
@@ -53,25 +53,30 @@ function App() {
             <p className="text-sm">{error}</p>
           </div>
         )}
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 mb-6">
           {/* Agent Status - takes 1 column */}
           <div className="lg:col-span-1">
             <AgentStatus agents={agents} />
           </div>
-          
+
           {/* Forecast Chart - takes 3 columns */}
           <div className="lg:col-span-3">
             <ForecastChart forecast={forecast} />
           </div>
         </div>
-        
+
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mb-6">
           {/* Production Metrics */}
           <ProductionMetrics beliefs={beliefs} />
-          
+
           {/* Battery Status */}
           <BatteryStatus beliefs={beliefs} />
+        </div>
+
+        {/* Agent Decisions */}
+        <div className="mb-6">
+          <AgentDecisions />
         </div>
         
         {/* Agent Decisions */}

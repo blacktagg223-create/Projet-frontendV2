@@ -2,23 +2,19 @@ import { useState, useEffect } from 'react';
 import { TriangleAlert as AlertTriangle, X, Shield } from 'lucide-react';
 
 const AlertsBanner = ({ alerts = [] }) => {
-  const [visibleAlerts, setVisibleAlerts] = useState([]);
-
-  useEffect(() => {
-    // Mock some alerts for demonstration
-    const mockAlerts = [
-      {
-        id: 1,
-        severity: 'WARNING',
-        type: 'BATTERY_HIGH_TEMPERATURE',
-        message: 'Battery temperature approaching safety limits',
-        recommendation: 'Reduce charging rate',
-        timestamp: new Date().toISOString()
-      }
-    ];
-    
-    setVisibleAlerts(alerts.length > 0 ? alerts : mockAlerts);
-  }, [alerts]);
+  const visibleAlerts =
+  alerts && alerts.length > 0
+    ? alerts
+    : [
+        {
+          id: 1,
+          severity: 'WARNING',
+          type: 'BATTERY_HIGH_TEMPERATURE',
+          message: 'Battery temperature approaching safety limits',
+          recommendation: 'Reduce charging rate',
+          timestamp: new Date().toISOString()
+        }
+      ];
 
   const dismissAlert = (alertId) => {
     setVisibleAlerts(prev => prev.filter(alert => alert.id !== alertId));

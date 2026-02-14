@@ -2,7 +2,9 @@ import { LineChart, Line, XAxis, YAxis, CartesianGrid, Tooltip, Legend, Responsi
 import { TrendingUp } from 'lucide-react';
 
 const ForecastChart = ({ forecast }) => {
-  if (!forecast || !forecast.horizons) {
+    console.log(forecast.forecast.predictions);
+    forecast = forecast.forecast;
+  if (!forecast || !forecast.predictions || forecast.predictions.length === 0) {
     return (
       <div className="bg-gray-900 rounded-lg p-6">
         <div className="flex items-center gap-2 mb-4">
@@ -15,33 +17,31 @@ const ForecastChart = ({ forecast }) => {
       </div>
     );
   }
-
-  const horizonLabels = {
-    '15min': '15 Min',
-    '1h': '1 Hour',
-    '4h': '4 Hours',
-    '24h': '24 Hours'
-  };
-
-  const chartData = Object.entries(forecast.horizons).map(([key, data]) => ({
-    horizon: horizonLabels[key] || key,
-    value: data.value,
-    upperBound: data.value + data.uncertainty,
-    lowerBound: Math.max(0, data.value - data.uncertainty),
-    uncertainty: data.uncertainty
-  }));
+  // ✅ Adapter les données du backend au format attendu
+  const chartData = forecast?.predictions?.map((pred, index) => ({
+    horizon: pred.horizon || `T+${index + 1}h`,
+    value: pred.value || pred.production_kw || 0,
+    upperBound: pred.upper_bound || pred.value * 1.15 || 0,
+    lowerBound: pred.lower_bound || pred.value * 0.85 || 0,
+    uncertainty: (pred.upper_bound - pred.lower_bound) / 2 || pred.value * 0.15 || 0,
+    confidence: pred.confidence || 0.85,
+    timestamp: pred.timestamp
+  })) || [];
 
   const CustomTooltip = ({ active, payload, label }) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
         <div className="bg-gray-800 p-3 border border-gray-700 rounded-lg shadow-lg">
-          <p className="text-white font-medium">{`${label}`}</p>
+          <p className="text-white font-medium">{label}</p>
           <p className="text-blue-400">
-            {`Forecast: ${data.value.toFixed(1)} kWh`}
+            Forecast: {data.value.toFixed(1)} kWh
           </p>
           <p className="text-gray-400">
-            {`Uncertainty: ±${data.uncertainty.toFixed(1)} kWh`}
+            Uncertainty: ±{data.uncertainty.toFixed(1)} kWh
+          </p>
+          <p className="text-gray-500 text-xs mt-1">
+            Confidence: {Math.round(data.confidence * 100)}%
           </p>
         </div>
       );
@@ -62,44 +62,46 @@ const ForecastChart = ({ forecast }) => {
           </span>
         )}
       </div>
-      
+
       <div className="h-64">
         <ResponsiveContainer width="100%" height="100%">
           <ComposedChart data={chartData} margin={{ top: 20, right: 30, left: 20, bottom: 5 }}>
             <CartesianGrid strokeDasharray="3 3" stroke="#374151" />
-            <XAxis 
-              dataKey="horizon" 
+            <XAxis
+              dataKey="horizon"
               axisLine={false}
               tickLine={false}
               tick={{ fill: '#9CA3AF', fontSize: 12 }}
             />
-            <YAxis 
+            <YAxis
               axisLine={false}
               tickLine={false}
               tick={{ fill: '#9CA3AF', fontSize: 12 }}
               label={{ value: 'Production (kWh)', angle: -90, position: 'insideLeft', style: { fill: '#9CA3AF' } }}
             />
             <Tooltip content={<CustomTooltip />} />
-            
+
             {/* Uncertainty area */}
-            <Bar 
-              dataKey="upperBound" 
-              fill="rgba(59, 130, 246, 0.1)" 
+            <Area
+              type="monotone"
+              dataKey="upperBound"
               stroke="none"
-              stackId="uncertainty"
+              fill="rgba(59, 130, 246, 0.1)"
+              fillOpacity={1}
             />
-            <Bar 
-              dataKey="lowerBound" 
-              fill="rgba(59, 130, 246, -0.1)" 
+            <Area
+              type="monotone"
+              dataKey="lowerBound"
               stroke="none"
-              stackId="uncertainty"
+              fill="rgba(59, 130, 246, 0.05)"
+              fillOpacity={1}
             />
-            
+
             {/* Main forecast line */}
-            <Line 
-              type="monotone" 
-              dataKey="value" 
-              stroke="#3B82F6" 
+            <Line
+              type="monotone"
+              dataKey="value"
+              stroke="#3B82F6"
               strokeWidth={3}
               dot={{ fill: '#3B82F6', strokeWidth: 2, r: 4 }}
               activeDot={{ r: 6, fill: '#3B82F6' }}
@@ -107,7 +109,7 @@ const ForecastChart = ({ forecast }) => {
           </ComposedChart>
         </ResponsiveContainer>
       </div>
-      
+
       {forecast.model_version && (
         <div className="mt-4 text-xs text-gray-500">
           Model: {forecast.model_version}

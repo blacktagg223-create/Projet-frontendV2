@@ -1,5 +1,5 @@
 export const AGENT_STATES = {
-  EXECUTING: { color: 'bg-green-500', label: 'Executing' },
+  RUNNING: { color: 'bg-green-500', label: 'Executing' },
   IDLE: { color: 'bg-gray-500', label: 'Idle' },
   MONITORING: { color: 'bg-blue-500', label: 'Monitoring' },
   DEGRADED: { color: 'bg-orange-500', label: 'Degraded' },
@@ -8,7 +8,7 @@ export const AGENT_STATES = {
 
 export const AGENT_TYPES = {
   BDI: { color: 'bg-purple-100 text-purple-800', label: 'BDI' },
-  FORECAST: { color: 'bg-blue-100 text-blue-800', label: 'Forecast' },
+  LEARNING: { color: 'bg-blue-100 text-blue-800', label: 'Learning' },
   REACTIVE: { color: 'bg-green-100 text-green-800', label: 'Reactive' }
 };
 

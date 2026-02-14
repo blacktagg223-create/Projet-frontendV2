@@ -34,10 +34,10 @@ const ProductionMetrics = ({ beliefs }) => {
     return belief ? belief.value : defaultValue;
   };
 
-  const currentPower = getMetricValue('production.current_power');
-  const irradiance = getMetricValue('sensor.irradiance');
-  const panelTemp = getMetricValue('sensor.panel_temperature');
-  const gridInjection = getMetricValue('grid.injection_power');
+  const currentPower = getMetricValue('sensor.production.production');
+  const irradiance = getMetricValue('sensor.irradiance.irradiance');
+  const panelTemp = getMetricValue('sensor.temperature.temperature');
+  const gridInjection = getMetricValue('sensor.battery_current.battery_current');
 
   // Mock trend data (in real app, this would be calculated from historical data)
   const trends = {
